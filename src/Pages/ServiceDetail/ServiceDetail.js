@@ -15,7 +15,7 @@ const ServiceDetail = () => {
     },[])
     return (
         <div>
-            <h2>You are about to Book:{serviceId}</h2>
+            <h2>You are about to Book:{service.name}</h2>
             <div className='text-center'>
                 <Link to="/checkout">
                     <button className='btn btn-primary'>Proceed Checkout</button>
