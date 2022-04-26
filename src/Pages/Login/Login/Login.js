@@ -12,6 +12,8 @@ const Login = () => {
     const location = useLocation();
     let from = location.state?.from?.pathname || "/";
 
+    let errorElement;
+
     const [
         signInWithEmailAndPassword,
         user,
@@ -22,6 +24,10 @@ const Login = () => {
       if(user) {
           navigate(from, {replace: true});
       }
+
+      if(error){
+        errorElement=<p className='text-danger'>Error: {error.message}</p>
+    }
 
     
 
@@ -51,7 +57,7 @@ const Login = () => {
                Login
             </Button>
         </Form>
-        {/* {errorElement} */}
+        {errorElement}
         <p>New to Genius Car?? <Link to="/register" className='text-primary pe-auto text-decoration-none' onClick={navigateRegister}>Please Register.</Link></p>
         <p>Forget Password?? <button to="/register" className='btn btn-link text-primary pe-auto text-decoration-none' >Reset Password</button></p>
         <SocialLogin></SocialLogin>
