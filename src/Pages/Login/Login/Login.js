@@ -1,8 +1,9 @@
+import axios from 'axios';
 import React, { useRef } from 'react';
 import { Button, Form, } from 'react-bootstrap';
 import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import auth from '../../../firebase.init';
 import Loading from '../../Shared/Loading/Loading';
@@ -28,7 +29,7 @@ const Login = () => {
       const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
 
       if(user) {
-          navigate(from, {replace: true});
+        //  
       }
 
       if (loading || sending) {
@@ -41,12 +42,16 @@ const Login = () => {
 
     
 
-    const handleSubmit = event => {
+    const handleSubmit = async event => {
         event.preventDefault();
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
-        signInWithEmailAndPassword(email, password);
+        await signInWithEmailAndPassword(email, password);
+        const {data} = await axios.post('http://localhost:5000/login', {email})
+        console.log(data)
+        localStorage.setItem('accessToken', data.accessToken);
+        navigate(from, {replace: true});
     }
 
     const navigateRegister = event => {
@@ -82,7 +87,7 @@ const Login = () => {
         <p>New to Genius Car?? <Link to="/register" className='text-primary pe-auto text-decoration-none' onClick={navigateRegister}>Please Register.</Link></p>
         <p>Forget Password?? <button  className='btn btn-link text-primary pe-auto text-decoration-none' onClick={resetPassword}>Reset Password</button></p>
         <SocialLogin></SocialLogin>
-        <ToastContainer/>
+        
     </div>
     );
 };
